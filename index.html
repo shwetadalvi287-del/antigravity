@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STEM Quest - Gamified Learning for Rural India</title>
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo-section">
+        <i class="fa-solid fa-rocket"></i>
+        <h2>STEM Quest</h2>
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active" data-target="landing-screen">
+          <a href="#"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        </li>
+        <li class="nav-item" data-target="dashboard-screen">
+          <a href="#"><i class="fa-solid fa-graduation-cap"></i><span>Missions Hub</span></a>
+        </li>
+        <li class="nav-item nav-quest" data-target="quest-screen" id="nav-quest-item" style="display:none;">
+          <a href="#"><i class="fa-solid fa-gamepad"></i><span>Active Quest</span></a>
+        </li>
+        <li class="nav-item nav-lab" data-target="lab-screen">
+          <a href="#"><i class="fa-solid fa-flask-vial"></i><span>Virtual Lab</span></a>
+        </li>
+        <li class="nav-item nav-ai" data-target="ai-tutor-screen">
+          <a href="#"><i class="fa-solid fa-robot"></i><span>AI Tutor</span></a>
+        </li>
+        <li class="nav-item" data-target="leaderboard-screen">
+          <a href="#"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+        </li>
+        <li class="nav-item" data-target="analytics-screen">
+          <a href="#"><i class="fa-solid fa-chart-line"></i><span>My Progress</span></a>
+        </li>
+      </ul>
+      
+      <!-- User Profile (Quick Access) -->
+      <div class="user-quick-profile">
+        <div class="avatar-container">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Rohan" alt="User Avatar" id="user-avatar">
+          <div class="online-status"></div>
+        </div>
+        <div class="user-quick-info">
+          <h4 id="user-display-name">Rohan Kumar</h4>
+          <p id="user-quick-level">Class 8 • Level 2</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+      
+      <!-- Top Status Bar (Duolingo / PW Inspired) -->
+      <header class="status-bar">
+        <div class="status-stat-group">
+          <!-- Level Tag -->
+          <div class="stat-chip xp" title="Experience Points">
+            <i class="fa-solid fa-star"></i>
+            <span id="header-xp">340 XP</span>
+          </div>
+          <!-- Coin Count -->
+          <div class="stat-chip coins" title="Coins Collected">
+            <i class="fa-solid fa-coins"></i>
+            <span id="header-coins">120</span>
+          </div>
+          <!-- Streak Indicator -->
+          <div class="stat-chip streak" title="Daily Streak">
+            <i class="fa-solid fa-fire"></i>
+            <span id="header-streak">5 Days</span>
+          </div>
+        </div>
+        
+        <!-- Regional Language Selector -->
+        <div class="profile-actions">
+          <select id="lang-selector" class="btn-lang-selector">
+            <option value="en">English 🇬🇧</option>
+            <option value="hi">हिंदी (Hindi) 🇮🇳</option>
+            <option value="mr">मराठी (Marathi) 🇮🇳</option>
+          </select>
+        </div>
+      </header>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 1: LANDING / HERO SCREEN           -->
+      <!-- ========================================== -->
+      <section id="landing-screen" class="screen active">
+        <div class="hero-wrapper">
+          
+          <!-- Hero Announcement Banner -->
+          <div class="hero-banner">
+            <div class="hero-info">
+              <h1 id="landing-hero-title">Fear of STEM?<br>Turn Learning into Adventure!</h1>
+              <p id="landing-hero-subtitle">Learn Science, Math, Physics, and Coding through gamified missions, unlock levels, build real circuits in the lab, and solve doubts with your personal AI Tutor.</p>
+              <div class="hero-ctas">
+                <button class="btn-gamified btn-rose" onclick="switchTab('dashboard-screen')">
+                  <i class="fa-solid fa-rocket"></i> <span id="landing-cta-start">Start Quest Free</span>
+                </button>
+                <button class="btn-gamified btn-purple" onclick="switchTab('ai-tutor-screen')">
+                  <i class="fa-solid fa-robot"></i> <span id="landing-cta-ai">Ask AI Tutor</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="hero-visual">
+              <div class="orbit-ring"></div>
+              <div class="cosmic-orb">
+                <i class="fa-solid fa-atom"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Success Count Stats (Physics Wallah style) -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">1M+</div>
+              <div class="stat-label" id="stat-students">Rural Students Enrolled</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">50M+</div>
+              <div class="stat-label" id="stat-quizzes">Quizzes Solved</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">10M+</div>
+              <div class="stat-label" id="stat-missions">Missions Finished</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">20K+</div>
+              <div class="stat-label" id="stat-lessons">Bite-sized Lessons</div>
+            </div>
+          </div>
+
+          <!-- Class Categories cards -->
+          <div class="categories-wrapper">
+            <h3 id="categories-title">Select Your Learning Track</h3>
+            <div class="categories-grid">
+              <!-- Class 6-8 -->
+              <div class="category-card" onclick="selectClassTrack('Class 6-8')">
+                <div class="category-icon"><i class="fa-solid fa-cubes"></i></div>
+                <div class="category-info">
+                  <h4>Class 6 - 8</h4>
+                  <p id="cat-68-desc">Foundation STEM: Algebra basics, simple forces, cell structures, and plant cycles.</p>
+                </div>
+                <div class="category-lessons-count">
+                  <i class="fa-solid fa-play"></i> 45 Quests Available
+                </div>
+              </div>
+              
+              <!-- Class 9-10 -->
+              <div class="category-card middle" onclick="selectClassTrack('Class 9-10')">
+                <div class="category-icon"><i class="fa-solid fa-dna"></i></div>
+                <div class="category-info">
+                  <h4>Class 9 - 10</h4>
+                  <p id="cat-910-desc">Board Prep + Concepts: Quadratic equations, optics, chemistry reactions, and biology organs.</p>
+                </div>
+                <div class="category-lessons-count">
+                  <i class="fa-solid fa-play"></i> 68 Quests Available
+                </div>
+              </div>
+
+              <!-- Class 11-12 -->
+              <div class="category-card high" onclick="selectClassTrack('Class 11-12')">
+                <div class="category-icon"><i class="fa-solid fa-calculator"></i></div>
+                <div class="category-info">
+                  <h4>Class 11 - 12</h4>
+                  <p id="cat-1112-desc">Advanced STEM: Electromagnetism, organic structures, integral calculus, and genetics.</p>
+                </div>
+                <div class="category-lessons-count">
+                  <i class="fa-solid fa-play"></i> 82 Quests Available
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 2: STUDENT DASHBOARD (MISSION HUB)  -->
+      <!-- ========================================== -->
+      <section id="dashboard-screen" class="screen">
+        <div class="section-header">
+          <h2 id="dash-title"><i class="fa-solid fa-map"></i> Missions Hub</h2>
+          <p id="dash-subtitle">Embark on concept adventures to earn XP and level up!</p>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dashboard-main-column">
+            
+            <!-- Level Progress Bar Card -->
+            <div class="progress-status-card">
+              <div class="level-badge-large">
+                <span>LVL</span>
+                <h2 id="dash-level-num">2</h2>
+              </div>
+              <div class="level-progress-detail">
+                <h3 id="dash-level-title">STEM Explorer</h3>
+                <p><span id="dash-xp-count">340</span> / 600 XP (Earn 260 XP more to reach Innovator!)</p>
+                <div class="xp-bar-container">
+                  <div class="xp-bar-fill" id="dash-xp-fill" style="width: 56.6%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subject Mission Cards Row -->
+            <div class="quest-subjects-section">
+              <h3 id="subjects-heading" class="gamified-title">Select Subject Quest</h3>
+              
+              <!-- Math Row Card -->
+              <div class="subject-row-card math">
+                <div class="subject-icon-box"><i class="fa-solid fa-square-root-variable"></i></div>
+                <div class="subject-details">
+                  <h3 id="subject-math-title">Algebra Arena</h3>
+                  <p id="subject-math-desc">Topic: Variables & Equations • Defeat the Algebra Monster to secure the mathematical balance!</p>
+                </div>
+                <div>
+                  <button class="btn-gamified btn-blue" onclick="startQuest('math')">
+                    <i class="fa-solid fa-play"></i> Play Quest
+                  </button>
+                </div>
+              </div>
+
+              <!-- Physics Row Card -->
+              <div class="subject-row-card physics">
+                <div class="subject-icon-box"><i class="fa-solid fa-meteor"></i></div>
+                <div class="subject-details">
+                  <h3 id="subject-physics-title">Gravity Challenge</h3>
+                  <p id="subject-physics-desc">Topic: Newton's Laws of Motion • Mission: Launch the Space Rocket safely through gravitational pulls!</p>
+                </div>
+                <div>
+                  <button class="btn-gamified btn-rose" onclick="startQuest('physics')">
+                    <i class="fa-solid fa-play"></i> Play Quest
+                  </button>
+                </div>
+              </div>
+
+              <!-- Chemistry Row Card -->
+              <div class="subject-row-card chemistry">
+                <div class="subject-icon-box"><i class="fa-solid fa-atom"></i></div>
+                <div class="subject-details">
+                  <h3 id="subject-chemistry-title">Atom Lab reaction</h3>
+                  <p id="subject-chemistry-desc">Topic: Molecular Bonding • Assemble correct atom bonds to trigger high-energy reactions.</p>
+                </div>
+                <div>
+                  <button class="btn-gamified btn-purple" onclick="startQuest('chemistry')">
+                    <i class="fa-solid fa-play"></i> Play Quest
+                  </button>
+                </div>
+              </div>
+
+              <!-- Biology Row Card -->
+              <div class="subject-row-card biology">
+                <div class="subject-icon-box"><i class="fa-solid fa-dna"></i></div>
+                <div class="subject-details">
+                  <h3 id="subject-biology-title">Cell Explorer</h3>
+                  <p id="subject-biology-desc">Topic: Plant vs Animal Cell • Navigate inside the microscope to identify organelles and cell walls.</p>
+                </div>
+                <div>
+                  <button class="btn-gamified btn-green" onclick="startQuest('biology')">
+                    <i class="fa-solid fa-play"></i> Play Quest
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Dashboard Sidebar Stats Column -->
+          <div class="dashboard-sidebar-column">
+            <!-- Daily Challenges -->
+            <div class="challenges-card">
+              <h3 id="challenges-heading"><i class="fa-solid fa-circle-exclamation"></i> Daily Quests</h3>
+              <div class="challenges-list">
+                <div class="challenge-item" id="challenge-1">
+                  <div class="challenge-info-sub">
+                    <h4 id="ch1-title">Complete 1 Quiz</h4>
+                    <p class="challenge-reward">+50 XP • +10 Coins</p>
+                  </div>
+                  <i class="fa-solid fa-circle-play" style="color: var(--neon-blue); cursor: pointer;"></i>
+                </div>
+                <div class="challenge-item" id="challenge-2">
+                  <div class="challenge-info-sub">
+                    <h4 id="ch2-title">Light bulb in Circuit Lab</h4>
+                    <p class="challenge-reward">+70 XP • +20 Coins</p>
+                  </div>
+                  <i class="fa-solid fa-circle-play" style="color: var(--neon-blue); cursor: pointer;" onclick="switchTab('lab-screen')"></i>
+                </div>
+                <div class="challenge-item" id="challenge-3">
+                  <div class="challenge-info-sub">
+                    <h4 id="ch3-title">Ask AI Tutor 1 Doubt</h4>
+                    <p class="challenge-reward">+30 XP • +5 Coins</p>
+                  </div>
+                  <i class="fa-solid fa-circle-play" style="color: var(--neon-blue); cursor: pointer;" onclick="switchTab('ai-tutor-screen')"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievement Badges Collected -->
+            <div class="rewards-collected-card">
+              <h3 id="rewards-heading"><i class="fa-solid fa-medal"></i> My Trophies</h3>
+              <div class="rewards-grid-mini">
+                <div class="badge-item-mini unlocked" title="First Quest Solved">
+                  <div class="badge-icon-bubble"><i class="fa-solid fa-rocket"></i></div>
+                  <span>Pioneer</span>
+                </div>
+                <div class="badge-item-mini unlocked" title="5 Day Streak Achieved">
+                  <div class="badge-icon-bubble"><i class="fa-solid fa-fire"></i></div>
+                  <span>On Fire</span>
+                </div>
+                <div class="badge-item-mini" id="badge-master" title="Unlock by defeating a boss battle">
+                  <div class="badge-icon-bubble"><i class="fa-solid fa-crown"></i></div>
+                  <span>Master</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 3: ACTIVE QUEST PLAY SCREEN         -->
+      <!-- ========================================== -->
+      <section id="quest-screen" class="screen">
+        <div class="quest-play-wrapper">
+          
+          <!-- Top Info inside play screen -->
+          <div class="quest-header-bar">
+            <div>
+              <h3 id="active-quest-title">Active Quest: Newton's Gravity</h3>
+              <p id="active-quest-subtitle" style="font-size:12px; color:var(--text-muted);">Solve problems to rescue the rocket!</p>
+            </div>
+            
+            <div class="quest-health-stats">
+              <div class="heart-health" id="quest-hearts">
+                <i class="fa-solid fa-heart"></i>
+                <i class="fa-solid fa-heart"></i>
+                <i class="fa-solid fa-heart"></i>
+              </div>
+              <div class="quest-timer" id="quest-timer-box">00:45</div>
+            </div>
+          </div>
+
+          <!-- Graphic visual workspace container -->
+          <div class="quest-game-canvas">
+            <!-- Space Rocket elements -->
+            <div class="rocket-element" id="canvas-rocket">
+              🚀
+              <div class="rocket-thrust"></div>
+            </div>
+            <!-- Gravity Monster Boss element -->
+            <div class="boss-element" id="canvas-boss">🛸</div>
+          </div>
+
+          <!-- Question Prompt Container -->
+          <div class="quest-question-container">
+            <div class="quest-question-text" id="quest-question-text">
+              Loading Quest concept...
+            </div>
+            
+            <div class="quest-answers-grid" id="quest-answers-box">
+              <!-- Dynamically populated options -->
+            </div>
+          </div>
+
+          <div class="quest-action-row">
+            <button class="btn-gamified btn-purple" onclick="askAiTutorForHint()"><i class="fa-solid fa-lightbulb"></i> <span id="quest-btn-hint">Get AI Hint</span></button>
+            <button class="btn-gamified btn-rose" id="quest-next-btn" style="display:none;" onclick="loadNextQuestion()"><span id="quest-btn-next">Next Challenge</span> <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+
+          <!-- Victory / Reward Overlapping Screen Modal -->
+          <div class="quest-modal-success" id="quest-success-modal" style="display: none;">
+            <div class="trophy-glow-container">
+              <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h2 id="victory-title">Quest Accomplished!</h2>
+            <p id="victory-subtitle">The spaceship escaped the gravity trap! Excellent application of Newton's First Law.</p>
+            <div style="display:flex; gap: 20px; font-family: var(--font-display); font-size: 20px; font-weight:700;">
+              <span style="color: var(--neon-blue);"><i class="fa-solid fa-star"></i> +100 XP</span>
+              <span style="color: var(--neon-gold);"><i class="fa-solid fa-coins"></i> +25 Coins</span>
+            </div>
+            <button class="btn-gamified btn-green" onclick="completeAndCloseQuest()"><span id="victory-btn-close">Claim Rewards</span></button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 4: VIRTUAL LAB SIMULATOR           -->
+      <!-- ========================================== -->
+      <section id="lab-screen" class="screen">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-flask-vial"></i> Virtual STEM Lab</h2>
+          <p id="lab-subtitle">Design circuits and experiment with physical variables dynamically.</p>
+        </div>
+
+        <div class="lab-grid">
+          <!-- Interactive Workspace -->
+          <div class="lab-workspace">
+            <h3 id="lab-circuit-title">Experiment: Electric Circuit Builder</h3>
+            
+            <div class="lab-circuit-board" id="lab-circuit-board">
+              <!-- Wire Visuals -->
+              <div class="wire wire-h" style="width: 250px; left: 18%; top: 15%;"></div>
+              <div class="wire wire-h" style="width: 250px; left: 18%; top: 85%;"></div>
+              <div class="wire wire-v" style="height: 250px; left: 18%; top: 15%;"></div>
+              <div class="wire wire-v" style="height: 250px; left: 81%; top: 15%;"></div>
+              
+              <!-- Battery Component -->
+              <div class="lab-component battery" title="Click to inspect Voltage">
+                <i class="fa-solid fa-car-battery" style="color:var(--neon-blue);"></i>
+                <label id="lbl-battery">Battery</label>
+              </div>
+
+              <!-- Light Bulb Component -->
+              <div class="lab-component lightbulb" id="lab-lightbulb" title="Light Bulb">
+                <div class="glow-halo" id="bulb-glow"></div>
+                <i class="fa-solid fa-lightbulb"></i>
+                <label id="lbl-bulb">Light Bulb</label>
+              </div>
+
+              <!-- Resistor Component -->
+              <div class="lab-component resistor" title="Resistor limits flow">
+                <i class="fa-solid fa-microchip" style="color:var(--neon-purple);"></i>
+                <label id="lbl-resistor">Resistor</label>
+              </div>
+
+              <!-- Circuit Switch Component -->
+              <div class="lab-component switch-item" id="lab-switch" onclick="toggleCircuitSwitch()">
+                <i class="fa-solid fa-toggle-off" id="switch-icon" style="color:var(--neon-rose);"></i>
+                <label id="lbl-switch">Switch: OFF</label>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Controls and Mathematical Readouts -->
+          <div class="lab-controls-panel">
+            <h3 id="lab-panel-controls">Variable Control</h3>
+            
+            <div class="slider-group">
+              <label><span id="lab-label-voltage">Voltage (V)</span> <span id="voltage-val">9.0 V</span></label>
+              <input type="range" min="1" max="24" value="9" class="lab-slider" id="voltage-slider" oninput="updateCircuitValues()">
+            </div>
+
+            <div class="slider-group">
+              <label><span id="lab-label-resistance">Resistance (R)</span> <span id="resistance-val">10 Ω</span></label>
+              <input type="range" min="1" max="100" value="10" class="lab-slider" id="resistance-slider" oninput="updateCircuitValues()">
+            </div>
+
+            <!-- Mathematical Calculations -->
+            <div class="lab-calculations">
+              <h4 id="lab-panel-formula">Ohm's Law Engine (V = I * R)</h4>
+              <div class="calc-row">
+                <span id="lab-calc-v">Voltage (V)</span>
+                <span id="calc-v-disp" style="color:var(--neon-blue)">9.0 V</span>
+              </div>
+              <div class="calc-row">
+                <span id="lab-calc-r">Resistance (R)</span>
+                <span id="calc-r-disp" style="color:var(--neon-purple)">10.0 Ω</span>
+              </div>
+              <div class="calc-row">
+                <span id="lab-calc-i">Current (I = V / R)</span>
+                <span id="calc-i-disp" style="color:var(--neon-green)">0.90 A</span>
+              </div>
+            </div>
+
+            <button class="btn-gamified btn-green" id="btn-submit-experiment" onclick="verifyCircuitChallenge()">
+              <i class="fa-solid fa-check"></i> <span id="lab-btn-verify">Verify Circuit</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 5: AI TUTOR PANEL                   -->
+      <!-- ========================================== -->
+      <section id="ai-tutor-screen" class="screen">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-robot"></i> AI Tutor Space</h2>
+          <p id="ai-subtitle">Solve concepts or get solutions instantly in your local language.</p>
+        </div>
+
+        <div class="ai-tutor-container">
+          <!-- Preset questions list -->
+          <div class="ai-preset-topics">
+            <h3 id="ai-presets-title">Common STEM Doubts</h3>
+            <button class="preset-question-btn" onclick="askPresetDoubt('newton')">🚀 Explain Newton's Laws simply</button>
+            <button class="preset-question-btn" onclick="askPresetDoubt('algebra')">➕ Why is algebra useful in farming?</button>
+            <button class="preset-question-btn" onclick="askPresetDoubt('photosynthesis')">🌱 How do plants make food?</button>
+            <button class="preset-question-btn" onclick="askPresetDoubt('gravity')">🍎 What is Gravity? Easy explanation</button>
+            <button class="preset-question-btn" onclick="askPresetDoubt('atom')">⚛️ What is inside an Atom?</button>
+          </div>
+
+          <!-- Chat dialogue layout -->
+          <div class="ai-chat-box">
+            <div class="ai-chat-header">
+              <div class="ai-chat-header-info">
+                <div class="ai-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                  <h3>STEM AI Guru</h3>
+                  <p id="ai-status">Online • Multi-language enabled</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Messages Stream -->
+            <div class="ai-messages-area" id="chat-messages-stream">
+              <!-- Initial bot message -->
+              <div class="chat-bubble bot">
+                Namaste! I am your AI STEM Tutor. Ask me any science or math question. I can explain in Marathi, Hindi, or English!
+              </div>
+            </div>
+
+            <!-- Inputs footer -->
+            <div class="ai-chat-input-area">
+              <input type="text" class="ai-text-input" id="chat-user-input" placeholder="Type your question here (e.g. What is gravity?)..." onkeypress="handleChatKeyPress(event)">
+              <button class="btn-gamified btn-purple" style="padding:12px 20px;" onclick="sendUserMessage()">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 6: LEADERBOARD SCREEN               -->
+      <!-- ========================================== -->
+      <section id="leaderboard-screen" class="screen">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-trophy"></i> STEM Championship</h2>
+          <p id="leaderboard-subtitle">Compete with friends in your school, village, or district!</p>
+        </div>
+
+        <div class="leaderboard-tabs">
+          <button class="tab-btn-mini active" onclick="loadLeaderboard('class')" id="lb-tab-class">Classroom</button>
+          <button class="tab-btn-mini" onclick="loadLeaderboard('village')" id="lb-tab-village">Village Schools</button>
+          <button class="tab-btn-mini" onclick="loadLeaderboard('district')" id="lb-tab-district">District Board</button>
+        </div>
+
+        <div class="leaderboard-table-card">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th id="lb-col-rank">Rank</th>
+                <th id="lb-col-student">Student</th>
+                <th id="lb-col-class">Class</th>
+                <th id="lb-col-xp">XP Points</th>
+                <th id="lb-col-streak">Active Streak</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-rows-box">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SCREEN 7: ANALYTICS & FEAR METERS         -->
+      <!-- ========================================== -->
+      <section id="analytics-screen" class="screen">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-chart-line"></i> Learning Analytics</h2>
+          <p id="analytics-subtitle">Track your concepts mastered, study hours, and fear reduction stats.</p>
+        </div>
+
+        <div class="analytics-grid">
+          <!-- Subject Practice Strength Chart -->
+          <div class="chart-card">
+            <h3 id="anal-chart-title">Daily Study Hours (Weekly Trend)</h3>
+            <div class="chart-placeholder">
+              <div class="bar-chart-visual">
+                <div class="chart-bar" style="height: 40%;" data-val="1.5h"></div>
+                <div class="chart-bar" style="height: 60%;" data-val="2h"></div>
+                <div class="chart-bar" style="height: 30%;" data-val="1h"></div>
+                <div class="chart-bar" style="height: 85%;" data-val="3h"></div>
+                <div class="chart-bar" style="height: 70%;" data-val="2.5h"></div>
+                <div class="chart-bar" style="height: 95%;" data-val="3.5h"></div>
+                <div class="chart-bar" style="height: 50%;" data-val="1.8h"></div>
+              </div>
+              <div class="chart-labels-row">
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+                <span>Sun</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fear Score Dial Indicator -->
+          <div class="fear-radar-card">
+            <h3 id="anal-fear-title">STEM Subject Fear Index</h3>
+            <p id="anal-fear-desc" style="font-size:12px; color:var(--text-muted); margin-bottom: 12px;">Lower dial values indicate higher confidence and reduced anxiety!</p>
+            
+            <div class="fear-score-widget">
+              <!-- Radial Dial Widget -->
+              <div class="fear-dial-container">
+                <svg class="dial-svg">
+                  <circle class="dial-bg" cx="90" cy="90" r="70"></circle>
+                  <circle class="dial-fill" id="fear-dial-circle" cx="90" cy="90" r="70" style="stroke-dashoffset: 176;"></circle>
+                </svg>
+                <div class="dial-center-text">
+                  <h2 id="fear-percentage-value">40%</h2>
+                  <p id="fear-level-label">Mild Anxiety</p>
+                </div>
+              </div>
+
+              <!-- Subject Wise breakdown -->
+              <div class="fear-breakdown-list">
+                <div class="fear-subject-row">
+                  <span class="fear-sub-label"><i class="fa-solid fa-calculator" style="color:var(--neon-blue)"></i> Mathematics</span>
+                  <div class="fear-bar-mini">
+                    <div class="fear-bar-fill-mini" id="fear-math-bar" style="width: 45%; background-color: var(--neon-blue);"></div>
+                  </div>
+                </div>
+                <div class="fear-subject-row">
+                  <span class="fear-sub-label"><i class="fa-solid fa-meteor" style="color:var(--neon-rose)"></i> Physics</span>
+                  <div class="fear-bar-mini">
+                    <div class="fear-bar-fill-mini" id="fear-physics-bar" style="width: 50%; background-color: var(--neon-rose);"></div>
+                  </div>
+                </div>
+                <div class="fear-subject-row">
+                  <span class="fear-sub-label"><i class="fa-solid fa-atom" style="color:var(--neon-purple)"></i> Chemistry</span>
+                  <div class="fear-bar-mini">
+                    <div class="fear-bar-fill-mini" id="fear-chemistry-bar" style="width: 35%; background-color: var(--neon-purple);"></div>
+                  </div>
+                </div>
+                <div class="fear-subject-row">
+                  <span class="fear-sub-label"><i class="fa-solid fa-dna" style="color:var(--neon-green)"></i> Biology</span>
+                  <div class="fear-bar-mini">
+                    <div class="fear-bar-fill-mini" id="fear-biology-bar" style="width: 25%; background-color: var(--neon-green);"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JavaScript Main Application file -->
+  <script src="app.js"></script>
+</body>
+</html>
